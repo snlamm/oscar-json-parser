@@ -1,10 +1,10 @@
 class BudgetFormatter
 
-  attr_accessor :budget_string, :match_data
+  attr_accessor :budget_string, :match_groups, :budget_num, :budget
 
   def initialize(budget_string)
     @budget_string = budget_string
-    @match_data
+    @match_groups
     @budget_num = []
     @budget
     format_budget
@@ -13,13 +13,14 @@ class BudgetFormatter
   def format_budget
     @match_groups = get_match_groups
     recursive_formatter(1, nil)
+    binding.pry
     # set notices/errors if need be
   end
 
   # Produces 8 match groups. For example, 'US$1,644,736 (est.)' produces: (1)(,)(644)(,)(736)()()()
   # Another example: '$5-7.3 million [ 2 ] [ 3 ]' produces: (5)(-)(7)()()(.)(3)(million)
   def get_match_groups
-    regex_cond = /\$(\d+)([(\.\,\-])?(\d*)([\,\-])?(\d*)([\,\.])?(\d*)\s?(million)?/
+    regex_cond = /(\d+)([(\.\,\-])?(\d*)([\,\-])?(\d*)([\,\.])?(\d*)\s?(million)?/
     @budget_string.match(regex_cond)
   end
 
