@@ -24,7 +24,7 @@ class WinnerFilm
 
   def extract_link_json
     url = @film_info[:film_url]
-    # make adapter to get url data
+    @raw_json = WinnerDataGrabber.new(url)
   end
 
 
