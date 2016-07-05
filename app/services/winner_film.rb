@@ -39,6 +39,7 @@ class WinnerFilm
 
   def get_budget
     # create new object to get budget info
+    formatter = BudgetFormatter.new(@raw_json["Budget"])
   end
 
 
