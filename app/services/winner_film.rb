@@ -1,10 +1,11 @@
 class WinnerFilm
 
-  attr_accessor :film_info, :data_map, :raw_json
+  attr_accessor :film_info, :data_map, :raw_json, :notice
   def initialize(film_info)
     @film_info = film_info
     @data_map = {}
     @raw_json
+    @notice
     parse_data
   end
 
@@ -38,8 +39,13 @@ class WinnerFilm
   end
 
   def get_budget
-    # create new object to get budget info
     formatter = BudgetFormatter.new(@raw_json["Budget"])
+    @data_map[:budget] = formatter.budget
+    set_notice(formatter)
+  end
+
+  def set_notice
+
   end
 
 
