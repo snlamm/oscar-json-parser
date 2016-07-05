@@ -24,10 +24,15 @@ class BudgetFormatter
   def recursive_formatter(counter, current_sign)
     return if counter > 8
     current_match = @match_groups[counter]
-    # if the current_match is a num, take a certain action
-    # else, take a different action
+    if capture_is_num?(current_match)
+    elsif current_match.to_s != ""
+    end
     counter += 1
     recursive_formatter(counter, current_sign)
+  end
+
+  def capture_is_num?(match)
+    true if Float(match) rescue false
   end
 
 end
