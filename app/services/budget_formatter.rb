@@ -7,7 +7,7 @@ class BudgetFormatter
     @match_groups
     @budget_num = []
     @budget
-    format_budget
+    format_budget unless !@budget_string
   end
 
   def format_budget

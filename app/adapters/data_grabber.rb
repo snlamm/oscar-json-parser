@@ -1,5 +1,5 @@
 class DataGrabber
-
+  attr_accessor :url, :winners_list
   def initialize(url)
     @url = url
     @winners_list = []
