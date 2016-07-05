@@ -10,7 +10,7 @@ class BudgetFormatter
 
   def format_budget
     @match_groups = get_match_groups
-    # use recursion to go through match groups and take actions based on them
+    recursive_formatter(1, nil)
     # set notices/errors if need be
   end
 
@@ -20,4 +20,14 @@ class BudgetFormatter
     regex_cond = /\$(\d+)([(\.\,\-])?(\d*)([\,\-])?(\d*)([\,\.])?(\d*)\s?(million)?/
     @budget_string.match(regex_cond)
   end
+
+  def recursive_formatter(counter, current_sign)
+    return if counter > 8
+    current_match = @match_groups[counter]
+    # if the current_match is a num, take a certain action
+    # else, take a different action
+    counter += 1
+    recursive_formatter(counter, current_sign)
+  end
+
 end
