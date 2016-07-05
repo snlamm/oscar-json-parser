@@ -23,7 +23,7 @@ class DataGrabber
     end
   end
 
-  def get_film_info
+  def get_film_info(year)
     film_info = {}
     film_info[:year] = year["year"]
     film_info[:film_url] = find_winning_film(year)
