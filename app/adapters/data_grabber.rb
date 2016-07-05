@@ -19,7 +19,8 @@ class DataGrabber
   def extract_winners(data)
     data["results"].each do |year|
       winner_info = get_film_info(year)
-      # save data into new object
+      winner_film = WinnerFilm.new(winner_info)
+      winners_list << winner_film
     end
   end
 
