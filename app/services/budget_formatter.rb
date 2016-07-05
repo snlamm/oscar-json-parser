@@ -13,8 +13,7 @@ class BudgetFormatter
   def format_budget
     @match_groups = get_match_groups
     recursive_formatter(1, nil)
-    binding.pry
-    # set notices/errors if need be
+    @budget_num.count == 2 ? @budget = average_number : @budget = @budget_num[0]
   end
 
   # Produces 8 match groups. For example, 'US$1,644,736 (est.)' produces: (1)(,)(644)(,)(736)()()()
@@ -73,6 +72,10 @@ class BudgetFormatter
 
   def greater_than_mil?(num)
     num >= 1000000
+  end
+
+  def average_number
+    (@budget_num[0] + @budget_num[1]) / 2
   end
 
 end
