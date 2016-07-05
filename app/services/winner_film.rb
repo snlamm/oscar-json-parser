@@ -11,9 +11,9 @@ class WinnerFilm
   def parse_data
     get_oscar_year
     extract_link_json
-    #  add film title to data_map
-    # add release year to data_map
-    # add budget to data_map
+    get_title
+    get_release_year
+    get_budget
   end
 
   def get_oscar_year
@@ -24,7 +24,21 @@ class WinnerFilm
 
   def extract_link_json
     url = @film_info[:film_url]
-    @raw_json = WinnerDataGrabber.new(url)
+    @raw_json = WinnerDataGrabber.new(url).returned_data
+  end
+
+  def get_title
+    @data_map[:title] = @raw_json["Title"]
+  end
+
+  def get_release_year
+    raw_date = @raw_json[" Release dates "]
+    parsed_date = raw_date.match(/\d{4}/)[0]
+    @data_map[:release_year] = parsed_date
+  end
+
+  def get_budget
+    # create new object to get budget info
   end
 
 
