@@ -17,8 +17,22 @@ class DataGrabber
   end
 
   def extract_winners(data)
-    # iterate through each film
-    # find which one is the winners
-    # extract the oscar year and the film url
+    data["results"].each do |year|
+      winner_info = get_film_info(year)
+      # save data into new object
+    end
   end
+
+  def get_film_info
+    film_info = {}
+    film_info[:year] = year["year"]
+    film_info[:film_url] = find_winning_film(year)
+    film_info
+  end
+
+  def find_winning_film(year)
+    film_data = year["films"].detect {|film| film["Winner"]}
+    film_data["Detail URL"]
+  end
+
 end
