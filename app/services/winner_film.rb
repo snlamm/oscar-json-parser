@@ -56,6 +56,10 @@ class WinnerFilm
     if @data_map[:budget] == nil
       @notice = "No budget data was found. This film will not be counted toward the total average film budget"
     end
+    if (@raw_json["Budget"] && @raw_json["Budget"].count('$') == 0)
+      @notice = "This film's budget was not given in US dollars ($). Rather, it was #{@raw_json["Budget"].split(" [").first}. This film will not be counted toward the total average film budget"
+      @data_map[:budget] = nil
+    end
   end
 
 
