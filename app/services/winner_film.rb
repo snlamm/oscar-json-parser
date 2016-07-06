@@ -15,6 +15,7 @@ class WinnerFilm
     get_title
     get_release_year
     get_budget
+    @raw_json, @film_info = nil, nil
   end
 
   def get_oscar_year
@@ -30,7 +31,9 @@ class WinnerFilm
   end
 
   def get_title
-    @data_map[:title] = @raw_json["Title"]
+    title = @raw_json["Title"]
+    parsed_title = title.split("  ").first
+    @data_map[:title] = parsed_title
   end
 
   def get_release_year
@@ -48,10 +51,14 @@ class WinnerFilm
   def set_notice(formatter)
     result = formatter.budget_num
     if result.count == 2
-      @notice = "The budget was a range between #{result[0]} and #{result[1]}. The number presented, which is the average, is used to calculate total average film budget"
+      @notice = "The budget was a range between #{result[0]} and #{result[1]}. The number presented, which is the average, is also used to calculate total average film budget"
     end
     if @data_map[:budget] == nil
       @notice = "No budget data was found. This film will not be counted toward the total average film budget"
+    end
+    if (@raw_json["Budget"] && @raw_json["Budget"].count('$') == 0)
+      @notice = "This film's budget was not given in US dollars ($). Rather, it was #{@raw_json["Budget"].split(" [").first}. This film will not be counted toward the total average film budget"
+      @data_map[:budget] = nil
     end
   end
 

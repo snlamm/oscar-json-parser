@@ -19,7 +19,8 @@ class BudgetFormatter
   # Produces 8 match groups. For example, 'US$1,644,736 (est.)' produces: (1)(,)(644)(,)(736)()()()
   # Another example: '$5-7.3 million [ 2 ] [ 3 ]' produces: (5)(-)(7)()()(.)(3)(million)
   def get_match_groups
-    regex_cond = /(\d+)([(\.\,\-])?(\d*)([\,\-])?(\d*)([\,\.])?(\d*)\s?(million)?/
+    regex_cond = /(\d+)([(\.\,\-\–])?(\d*)([\,\-])?(\d*)([\,\.])?(\d*)\s?(million)?/
+    @budget_string.gsub!(/\ /, " ")
     @budget_string.match(regex_cond)
   end
 
@@ -54,11 +55,17 @@ class BudgetFormatter
       @budget_num[num] *= 1000000 unless greater_than_mil?(@budget_num[num])
       @budget_num[num] += (current_match.to_i * 100000)
     when "-"
-      @budget_num[0] *= 1000000 unless greater_than_mil?(@budget_num[0])
-      @budget_num[1] = (current_match.to_i) * 1000000
+      handle_dash(current_match)
+    when "–"
+      handle_dash(current_match)
     when "million"
       @budget_num[num] *= 1000000 unless greater_than_mil?(@budget_num[num])
     end
+  end
+
+  def handle_dash(current_match)
+    @budget_num[0] *= 1000000 unless greater_than_mil?(@budget_num[0])
+    @budget_num[1] = (current_match.to_i) * 1000000
   end
 
   def handle_sign(current_match)
