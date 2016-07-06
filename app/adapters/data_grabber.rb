@@ -4,6 +4,7 @@ class DataGrabber
     @url = url
     @winners_list = []
     get_winners
+    binding.pry
   end
 
   def get_winners
