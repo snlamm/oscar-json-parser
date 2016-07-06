@@ -1,11 +1,10 @@
 class WinnerFilm
 
-  attr_accessor :film_info, :data_map, :raw_json, :notice
+  attr_accessor :film_info, :data_map, :raw_json
   def initialize(film_info)
     @film_info = film_info
     @data_map = {}
     @raw_json
-    @notice
     parse_data
   end
 
@@ -51,13 +50,13 @@ class WinnerFilm
   def set_notice(formatter)
     result = formatter.budget_num
     if result.count == 2
-      @notice = "The budget was a range between #{result[0]} and #{result[1]}. The number presented, which is the average, is also used to calculate total average film budget"
+      @data_map[:notice] = "The budget was a range between #{result[0]} and #{result[1]}. The number presented, which is the average, is also used to calculate total average film budget"
     end
     if @data_map[:budget] == nil
-      @notice = "No budget data was found. This film will not be counted toward the total average film budget"
+      @data_map[:notice] = "No budget data was found. This film will not be counted toward the total average film budget"
     end
     if (@raw_json["Budget"] && @raw_json["Budget"].count('$') == 0)
-      @notice = "This film's budget was not given in US dollars ($). Rather, it was #{@raw_json["Budget"].split(" [").first}. This film will not be counted toward the total average film budget"
+      @data_map[:notice] = "This film's budget was not given in US dollars ($). Rather, it was #{@raw_json["Budget"].split(" [").first}. This film will not be counted toward the total average film budget"
       @data_map[:budget] = nil
     end
   end
