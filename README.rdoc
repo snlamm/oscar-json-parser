@@ -4,6 +4,8 @@ This app takes the input of a url for an api of oscar film contenders and output
 
 Run this app by forking it, entering 'bundle install' in the console to install third party dependencies (in this case RestClient and JSON), entering 'rails s' in the console to start the rails server, and then navigating to http://localhost:3000/oscar_data. (Though it is not being used directly, make sure, as well, that Postgres is open and running on your computer.)
 
+You can view a video demo of this app here: https://www.youtube.com/watch?v=lRzfGp2ywbI
+
 I chose to make this app in Rails to take advantage of its quick setup, its routing and rendering capabilities (which made it simple to output a view/template), and because it allows for easy addition of features, such as if I wanted to save the information to a database.
 
 This app took advantage of object oriented programming, including by splitting different tasks among different classes. This makes the code more approachable and allows methods to be found more intuitively.
