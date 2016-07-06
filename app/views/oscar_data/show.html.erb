@@ -1,0 +1,28 @@
+<h1>Oscar Winning Films </h1>
+
+<table class="table table-hover table-responsive">
+  <tr>
+    <th>Oscar Year</th>
+    <th>Title</th>
+    <th>Year</th>
+    <th>Budget</th>
+    <th>Notes</th>
+  </tr>
+  <% @data.oscar_map.each do |movie| %>
+  <tr>
+    <td><b><%= movie[:oscar_year] %><b></td>
+    <td><%= movie[:title] %></td>
+    <td><%= movie[:release_year] %></td>
+    <td style="text-align: center"><%= movie[:budget] ? movie[:budget] : "-" %></td>
+    <td><%= movie[:notice] if movie[:notice] %></td>
+  </tr>
+  <% end %>
+</table>
+
+<br>
+
+<ul>
+  <li>Total film budgets counted: <%= @data.averaging_count %></li>
+  <li>Budget total: <%= @data.budget_total %></li>
+  <li><b>Average budget: <%= @data.budget_average %><b></li>
+</ul>
