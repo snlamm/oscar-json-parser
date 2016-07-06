@@ -1,28 +1,34 @@
-== README
+Welcome to the Oscar JSON Parser
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This app takes the input of a url for an api of oscar film contenders and outputs a rendered template that shows each year's winning film, production year, and budget along with the average budget at the end.
 
-Things you may want to cover:
+Run this app by forking it, entering 'bundle install' in the console to install third party dependencies (in this case RestClient and JSON), entering 'rails s' in the console to start the rails server, and then navigating to http://localhost:3000/oscar_data. (Though it is not being used directly, make sure, as well, that Postgres is open and running on your computer.)
 
-* Ruby version
+I chose to make this app in Rails to take advantage of its quick setup, its routing and rendering capabilities (which made it simple to output a view/template), and because it allows for easy addition of features, such as if I wanted to save the information to a database.
 
-* System dependencies
+This app took advantage of object oriented programming, including by splitting different tasks among different classes. This makes the code more approachable and allows methods to be found more intuitively.
 
-* Configuration
+The approach I took was to make an OscarData class in app/services/oscar_data.rb that initialized the process, calling on all my other classes and, from their output, assembling an overarching map of the film data. This is the data that would eventually be rendered. For the OscarData class to get its data, it calls on the DataGrabber class in app/adapters/data_grabber.rb.
 
-* Database creation
+DataGrabber uses RestClient to get the JSON from the api. It then filters the list of films and selects only those that have won the oscar. Keeping only the winners allows us to avoid unecessary iteration later on. Once DataGrabber has selected all the winners, its final task is to extract each winner's api url and oscar year and use them to initialize a new class object, WinnerFilm.
 
-* Database initialization
+The WinnerFilm class (app/services/winner_film.rb), which is made for each winning film, is responsible for extracting and formatting the data for its specific film. This includes extracting the film's title, release_year, and budget. In order to do this extracting, it relies on two other classes: WinnerDataGrabber and BudgetFormatter.
 
-* How to run the test suite
+WinnerDataGrabber, found in app/adapters/winner_data_grabber.rb, is responsible for getting the Json for the film.
 
-* Services (job queues, cache servers, search engines, etc.)
+BudgetFormatter, found in app/services/budget_formatter.rb, is responsible for taking in the raw form of its film's budget and outputting a more nicely formatted one that can be manipulated (ex. summed and averaged).
 
-* Deployment instructions
+The BudgetFormatter formatting is done through Regex capture groups. Essentially, the string of raw budget data is split into distinct parts. Each of these parts, including non-word characters such as ,-., are used, along with recursion, to rebuild the string in a better format. Along the way, edge cases are handled such as missing budget information, special characters, ranges, and non-dollar denominated values.
 
-* ...
+-Films with missing budget information and non-dollar denominated values were given notes in the view rendering and were not counted toward calculating the budget average.
+-A film whose budget was given as a range was handled by giving it a note in the view as to the range and counting the range's average toward the calculating the budget average.
+-Special characters were replaced by comparable normal characters.
 
+(Other edge cases were also dealt with elsewhere in the WinnerFilm, such as if multiple release dates were given for a film. In that case, the earliest release date was taken).
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Once WinnerFilm's BudgetFormatter is finished, WinnerFilm builds a hash of its own important values, including its title, release year, and budget.
+
+The process then comes full circle, as OscarData takes each WinnerFilm and adds its hash to the overall OscarData map, which eventually comes to comprise the data from each and every winning movie. It it at this point that any notes on edge cases are added to the individual film's hash and the average budget is calculated. OscarData is now completed.
+
+We are able to see OscarData through a template, found at app/views/oscar_data/show.html.erb.
+In practice, when we navigate to localhost3000/oscar_data, this hits the route in config/routes.rb, which maps to the controller create action in app/controllers/oscar_data_controller. That controller calls on OscarData and passes it through to the template where it is rendered as a table.
