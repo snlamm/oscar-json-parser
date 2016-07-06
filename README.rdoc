@@ -20,9 +20,9 @@ BudgetFormatter, found in app/services/budget_formatter.rb, is responsible for t
 
 The BudgetFormatter formatting is done through Regex capture groups. Essentially, the string of raw budget data is split into distinct parts. Each of these parts, including non-word characters such as ,-., are used, along with recursion, to rebuild the string in a better format. Along the way, edge cases are handled such as missing budget information, special characters, ranges, and non-dollar denominated values.
 
--Films with missing budget information and non-dollar denominated values were given notes in the view rendering and were not counted toward calculating the budget average.
--A film whose budget was given as a range was handled by giving it a note in the view as to the range and counting the range's average toward the calculating the budget average.
--Special characters were replaced by comparable normal characters.
+(Films with missing budget information and non-dollar denominated values were given notes in the view rendering and were not counted toward calculating the budget average.
+A film whose budget was given as a range was handled by giving it a note in the view as to the range and counting the range's average toward the calculating the budget average.
+Special characters were replaced by comparable normal characters.)
 
 (Other edge cases were also dealt with elsewhere in the WinnerFilm, such as if multiple release dates were given for a film. In that case, the earliest release date was taken).
 
